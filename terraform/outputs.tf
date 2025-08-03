@@ -24,5 +24,5 @@ output "gke_cluster_ca_certificate" {
 }
 
 output "gke_endpoint" {
-  value = google_container_cluster.primary.endpoint
+  value = module.gke.endpoint  # ✅ Valid (after step 1 fix)
 }
