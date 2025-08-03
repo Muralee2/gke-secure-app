@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"cloudflare_dns","Source":"./modules/cloudflare_dns","Dir":""},{"Key":"firewall","Source":"./modules/firewall","Dir":"modules/firewall"},{"Key":"gke","Source":"./modules/gke","Dir":"modules/gke"},{"Key":"vpc","Source":"./modules/vpc","Dir":"modules/vpc"}]}
