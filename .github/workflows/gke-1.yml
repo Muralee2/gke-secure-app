@@ -1,0 +1,43 @@
+name: GCP Terraform Deployment
+
+on:
+  workflow_dispatch:  # Manual trigger via GitHub UI
+
+permissions:
+  contents: read
+  id-token: write  # Needed for authentication
+
+jobs:
+  deploy:
+    name: Terraform Apply on GCP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.6  # or any stable version you're using
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform  # update if your folder is different
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
