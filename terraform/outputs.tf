@@ -9,8 +9,8 @@ output "vpc_subnetwork_name" {
 }
 
 output "gke_cluster_name" {
-  description = "Name of the GKE cluster"
   value       = module.gke.cluster_name
+  description = "Name of the GKE cluster"
 }
 
 output "gke_cluster_endpoint" {
@@ -19,8 +19,8 @@ output "gke_cluster_endpoint" {
 }
 
 output "gke_cluster_ca_certificate" {
-  description = "GKE cluster CA certificate"
   value       = module.gke.ca_certificate
+  description = "Cluster CA certificate"
 }
 
 output "gke_endpoint" {
