@@ -1,7 +1,0 @@
-ingress:
-  enabled: true
-  hostname: your.domain.com
-  tls: true
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  tlsSecret: tls-secret
