@@ -22,3 +22,7 @@ output "gke_cluster_ca_certificate" {
   description = "GKE cluster CA certificate"
   value       = module.gke.ca_certificate
 }
+
+output "gke_endpoint" {
+  value = google_container_cluster.primary.endpoint
+}
