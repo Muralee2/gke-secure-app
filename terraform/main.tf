@@ -6,11 +6,7 @@ terraform {
     }
   }
 
-  backend "gcs" {
-    bucket = "your-tf-state-bucket"  # Replace with your actual bucket name
-    prefix = "terraform/state"
-  }
-}
+ 
 
 provider "google" {
   project = var.project_id
