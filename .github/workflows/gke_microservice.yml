@@ -1,13 +1,11 @@
-name: Terraform Deploy
+name: Terraform Deploy (Manual)
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   terraform:
-    name: 'Terraform Workflow'
+    name: 'Terraform CI/CD'
     runs-on: ubuntu-latest
 
     permissions:
@@ -18,7 +16,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Setup Google Cloud
+    - name: Authenticate to GCP
       uses: google-github-actions/auth@v1
       with:
         credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
@@ -41,11 +39,4 @@ jobs:
       working-directory: ./terraform
 
     - name: Terraform Plan
-      run: terraform plan -var-file="terraform.tfvars"
-      working-directory: ./terraform
 
-    # Optional: Apply directly on main (use with caution)
-    # - name: Terraform Apply
-    #   if: github.ref == 'refs/heads/main'
-    #   run: terraform apply -auto-approve -var-file="terraform.tfvars"
-    #   working-directory: ./terraform
