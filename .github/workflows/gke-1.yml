@@ -26,6 +26,18 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Create backend.tf file for GCS
+        run: |
+          cat > ./terraform/backend.tf <<EOF
+          terraform {
+            backend "gcs" {
+              bucket  = "project-og"
+              prefix  = "terraform/state"
+              region  = "us-central1"
+            }
+          }
+          EOF
+
       - name: Terraform Init (with GCS backend)
         run: terraform init
         working-directory: ./terraform
