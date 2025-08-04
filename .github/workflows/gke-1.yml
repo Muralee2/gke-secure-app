@@ -1,46 +1,43 @@
+name: Terraform Apply - GKE Deployment
+
+on:
+  workflow_dispatch:  # Manual trigger from GitHub Actions UI
+
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
-  deploy:
-    name: Terraform Apply on GCP
+  terraform:
+    name: Terraform Apply
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repo
         uses: actions/checkout@v4
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.6.6
+          terraform_version: 1.6.6  # Change version if needed
 
-      - name: Create backend.tf file for GCS
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set GCP Project and Region
         run: |
-          cat > ./terraform/backend.tf <<EOF
-          terraform {
-            backend "gcs" {
-              bucket = "your-gcs-bucket-name"
-              prefix = "terraform/state"
-            }
-          }
-          EOF
+          echo "GOOGLE_CLOUD_PROJECT=your-gcp-project-id" >> $GITHUB_ENV
+          echo "GOOGLE_CLOUD_REGION=us-central1" >> $GITHUB_ENV  # Or change region if needed
 
-      - name: Terraform Init (with GCS backend)
+      - name: Terraform Init
         run: terraform init
-        working-directory: ./terraform
-
-      - name: Terraform Validate
-        run: terraform validate
-        working-directory: ./terraform
 
       - name: Terraform Plan
-        run: terraform plan
-        working-directory: ./terraform
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
-        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
 
